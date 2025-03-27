@@ -15,5 +15,8 @@
     <Folder Include="src\Components\ArtikloveProcesy\KorekciaZasob\" />
     <Folder Include="src\Components\ArtikloveProcesy\MAXOPT\" />
     <Folder Include="src\Components\ArtikloveProcesy\Odpisy\" />
+    <Folder Include="src\Components\CreateUser\" />
+    <Folder Include="src\Components\KontrolnyZoznam\" />
+    <Folder Include="src\Components\LogoutButton\" />
   </ItemGroup>
 </Project>
