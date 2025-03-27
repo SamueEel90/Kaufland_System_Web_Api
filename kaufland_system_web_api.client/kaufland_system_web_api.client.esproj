@@ -9,9 +9,7 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="src\assets\" />
     <Folder Include="src\Components\ArtikelInfo\" />
-    <Folder Include="src\Components\ArtikloveProcesy\Dataclearing\" />
     <Folder Include="src\Components\ArtikloveProcesy\KorekciaZasob\" />
     <Folder Include="src\Components\ArtikloveProcesy\MAXOPT\" />
     <Folder Include="src\Components\ArtikloveProcesy\Odpisy\" />

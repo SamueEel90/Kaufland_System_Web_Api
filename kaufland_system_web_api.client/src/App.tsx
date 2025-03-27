@@ -1,58 +1,56 @@
-import { useEffect, useState } from 'react';
-import './App.css';
-
-interface Forecast {
-    date: string;
-    temperatureC: number;
-    temperatureF: number;
-    summary: string;
-}
-
-function App() {
-    const [forecasts, setForecasts] = useState<Forecast[]>();
-
-    useEffect(() => {
-        populateWeatherData();
-    }, []);
-
-    const contents = forecasts === undefined
-        ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
-        : <table className="table table-striped" aria-labelledby="tableLabel">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Temp. (C)</th>
-                    <th>Temp. (F)</th>
-                    <th>Summary</th>
-                </tr>
-            </thead>
-            <tbody>
-                {forecasts.map(forecast =>
-                    <tr key={forecast.date}>
-                        <td>{forecast.date}</td>
-                        <td>{forecast.temperatureC}</td>
-                        <td>{forecast.temperatureF}</td>
-                        <td>{forecast.summary}</td>
-                    </tr>
-                )}
-            </tbody>
-        </table>;
-
+﻿/* eslint-disable @typescript-eslint/no-unused-vars */
+import React from 'react';
+import ReactDOM from "react-dom/client";
+import { BrowserRouter as Router, Route, Routes } from 'react-router';
+import LoginPage from "./Pages/LoginPage/LoginPage";
+import HomePage from "./Pages/HomePage/HomePage";
+import ProfilePage from './Pages/ProfilePage/ProfilePage';
+import ArtikloveProcesy from './Components/ArtikloveProcesy/ArtikloveProcesy';
+import KorekciaZasob from './Components/ArtikloveProcesy/KorekciaZasob/KorekciaZasob';
+import DataClearing from './Components/ArtikloveProcesy/Dataclearing/DataClearing';
+import MAXOPT from './Components/ArtikloveProcesy/MAXOPT/MAXOPT';
+import Odpisy from './Components/ArtikloveProcesy/Odpisy/Odpisy';
+import SkladovaKniha from './Components/SkladovaKniha/SkladovaKniha';
+import KontrolnyZoznam from './Components/KontrolnyZoznam/KontrolnyZoznam';
+import CreateUser from './Components/CreateUser/CreateUser';
+import PrijemTovaru from './Components/PrijemTovaru/PrijemTovaru';
+import ProtectedRoute from '../src/ProtectedRoute';
+import PravidelneObjednavky from './Components/PrijemTovaru/PravidelneObjednavky/PravidelneObjednavky';
+import ExternyDodavatelia from './Components/PrijemTovaru/ExternyDodavatelia/ExternyDodavatelia';
+import MediaPrint from './Components/PrijemTovaru/MediaPrint/MediaPrint';
+import MimoriadneObjednavky from './Components/PrijemTovaru/MimoriadneObjednavky/MimoriadneObjednavky';
+import ArtikelInfo from './Components/ArtikelInfo/ArtikelInfo';
+const App: React.FC = () => {
     return (
-        <div>
-            <h1 id="tableLabel">Weather forecast</h1>
-            <p>This component demonstrates fetching data from the server.</p>
-            {contents}
-        </div>
-    );
+        <>
 
-    async function populateWeatherData() {
-        const response = await fetch('weatherforecast');
-        if (response.ok) {
-            const data = await response.json();
-            setForecasts(data);
-        }
-    }
+            <Router>
+                <Routes>
+                    <Route path="/" element={<LoginPage />} />
+
+                    <Route element={<ProtectedRoute />}>
+                        <Route path="/home" element={<HomePage />} />
+                        <Route path="/profile" element={<ProfilePage />} />
+                        <Route path='/kontrolnyZoznam' element={<KontrolnyZoznam />} />
+                        <Route path='/artikloveProcesy' element={<ArtikloveProcesy />} />
+                        <Route path='/artikloveProcesy/KorekciaZasob' element={<KorekciaZasob />} />
+                        <Route path='/artikloveProcesy/Dataclearing' element={<DataClearing />} />
+                        <Route path='/artikloveProcesy/MAXOPT' element={<MAXOPT />} />
+                        <Route path='/artikloveProcesy/Odpisy' element={<Odpisy />} />
+                        <Route path='/artikloveProcesy/SkladovaKniha' element={<SkladovaKniha />} />
+                        <Route path='/createUser' element={<CreateUser />} />
+                        <Route path='/artikelInfo' element={<ArtikelInfo />} />
+                        <Route path='/prijemTovaru' element={<PrijemTovaru />} />
+                        <Route path='/prijemTovaru/PravidelneObjednavky' element={<PravidelneObjednavky />} />
+                        <Route path='/prijemTovaru/MimoriadneObjednavky' element={<MimoriadneObjednavky />} />
+                        <Route path='/prijemTovaru/MediaPrint' element={<MediaPrint />} />
+                        <Route path='/prijemTovaru/ExternyDodavatelia' element={<ExternyDodavatelia />} />
+                    </Route>
+                </Routes>
+            </ Router>
+
+        </>
+    );
 }
 
 export default App;

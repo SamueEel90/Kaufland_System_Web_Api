@@ -40,7 +40,7 @@ function KorekciaZasob() {
         const quantity = parseInt(formData.get("quantity") as string, 10);
         try {
             await axios.patch(
-                `https://localhost:7016/api/Product/KorekciaZasob/${vybranyProdukt?.id}`,
+                `https://localhost:7145/api/Product/KorekciaZasob/${vybranyProdukt?.id}`,
                 quantity,
                 {
                     headers: {
@@ -59,7 +59,7 @@ function KorekciaZasob() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`https://localhost:7016/api/Product/Search`, {
+                const response = await axios.get(`https://localhost:7145/api/Product/Search`, {
                     params: {
                         searchType: typHladania,
                         searchTerm: hladanyVyraz
