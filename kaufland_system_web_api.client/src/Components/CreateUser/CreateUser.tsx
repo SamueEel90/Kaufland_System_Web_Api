@@ -8,7 +8,7 @@ interface User {
     password: string;
     rola: number;
 }
-
+const API_URL = 'https://localhost:7145/api/User/CreateUser';
 function CreateUser() {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -34,7 +34,7 @@ function CreateUser() {
         console.log("User data sent to API:", userData);
 
         try {
-            const response = await axios.post('https://localhost:7145/api/User/CreateUser', userData, {
+            const response = await axios.post(API_URL, userData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

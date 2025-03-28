@@ -11,14 +11,14 @@ interface RegularOrderData {
     minZasoba: number;
     maxZasoba: number;
 }
-
+const API_URL = 'https://localhost:7016/api/Product/RegularOrder';
 const PravidelneObjednavky: React.FC = () => {
     const [regularOrderData, setRegularOrderData] = useState<RegularOrderData[]>([]);
     const category = useSelector((state: RootState) => state.orderCategory.orderCategory);
 
     const fetchRegularOrder = async () => {
         try {
-            const response = await axios.get(`https://localhost:7016/api/Product/RegularOrder`, {
+            const response = await axios.get(API_URL, {
                 params: {
                     category: category,
                 },

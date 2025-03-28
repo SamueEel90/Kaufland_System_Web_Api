@@ -14,8 +14,9 @@ interface Product {
     pocetPredanych: number;
     druhListovania: string;
 }
-
+const API_BASE_URL = 'https://localhost:7145/api/Product';
 function KorekciaZasob() {
+
     const [hladanyVyraz, setHladanyVyraz] = useState('');
     const [typHladania, setTypHladania] = useState('Nazov');
     const [products, setProducts] = useState<Product[]>([]);
@@ -40,7 +41,7 @@ function KorekciaZasob() {
         const quantity = parseInt(formData.get("quantity") as string, 10);
         try {
             await axios.patch(
-                `https://localhost:7145/api/Product/KorekciaZasob/${vybranyProdukt?.id}`,
+                `${API_BASE_URL}/KorekciaZasob/${vybranyProdukt?.id}`,
                 quantity,
                 {
                     headers: {
@@ -59,7 +60,7 @@ function KorekciaZasob() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`https://localhost:7145/api/Product/Search`, {
+                const response = await axios.get(`${API_BASE_URL }/Search`, {
                     params: {
                         searchType: typHladania,
                         searchTerm: hladanyVyraz

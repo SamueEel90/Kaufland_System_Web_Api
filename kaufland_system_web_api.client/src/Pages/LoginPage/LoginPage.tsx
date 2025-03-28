@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { setRole } from '../../roleSlice';
 
+const API_URL = 'https://localhost:7145/api/User/Login';
 function LoginPage() {
     const usernameRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
@@ -33,7 +34,7 @@ function LoginPage() {
         }
 
         try {
-            const response = await axios.post('https://localhost:7145/api/User/Login',
+            const response = await axios.post(API_URL,
                 {
                     username,
                     password,
