@@ -14,12 +14,14 @@ interface Product {
     pocetPredanych: number;
     druhListovania: string;
 }
-
+const API_BASE_URL = 'https://localhost:7145/api/Product';
 const ArtikelInfo: React.FC = () => {
     const [hladanyVyraz, setHladanyVyraz] = useState('');
     const [typHladania, setTypHladania] = useState('Nazov');
     const [products, setProducts] = useState<Product[]>([]);
     const [vybranyProdukt, setVybranyProdukt] = useState<Product | null>(null);
+
+    
 
     const zmenHladanyVyraz = (event: React.ChangeEvent<HTMLInputElement>) => {
         setHladanyVyraz(event.target.value);
@@ -37,7 +39,7 @@ const ArtikelInfo: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`https://localhost:7145/api/Product/Search`, {
+                const response = await axios.get(`${API_BASE_URL}/Search`, {
                     params: {
                         searchType: typHladania,
                         searchTerm: hladanyVyraz

@@ -2,16 +2,16 @@
 import React from 'react';
 
 function DataClearing() {
+    const apiUrl = 'http://localhost:3001/ChybnyProdukt/Dataclearing';
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const eanKod = Number(formData.get("eanKod"));
         const nazov = formData.get("nazov") as string;
-        console.log("EAN kod:", eanKod);
-        console.log("Nazov:", nazov);
+      
 
         try {
-            axios.post('http://localhost:3001/ChybnyProdukt/Dataclearing',
+            axios.post(apiUrl,
                 { eanKod, nazov },
                 {
                     headers: {

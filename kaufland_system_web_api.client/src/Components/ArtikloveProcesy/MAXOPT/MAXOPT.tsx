@@ -1,153 +1,156 @@
-﻿import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import styles from './MAXOPT.module.css';
+﻿
+    import React, { useState, useEffect } from 'react';
+    import axios from 'axios';
+    import styles from './MAXOPT.module.css';
 
-interface Product {
-    id: number;
-    nazov: string;
-    eanKod: string;
-    kategoria: string;
-    vyrobca: string;
-    cena: number;
-    zasoba: number;
-    minZasoba: number;
-    pocetPredanych: number;
-    druhListovania: string;
-    maxZasoba: number;
-}
+    const API_BASE_URL = 'https://localhost:7145/api/Product';
 
-function MAXOPT() {
-    const [hladanyVyraz, setHladanyVyraz] = useState('');
-    const [typHladania, setTypHladania] = useState('Nazov');
-    const [products, setProducts] = useState<Product[]>([]);
-    const [vybranyProdukt, setVybranyProdukt] = useState<Product | null>(null);
+    interface Product {
+        id: number;
+        nazov: string;
+        eanKod: string;
+        kategoria: string;
+        vyrobca: string;
+        cena: number;
+        zasoba: number;
+        minZasoba: number;
+        pocetPredanych: number;
+        druhListovania: string;
+        maxZasoba: number;
+    }
 
-    const zmenHladanyVyraz = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setHladanyVyraz(event.target.value);
-    };
+    function MAXOPT() {
+        const [hladanyVyraz, setHladanyVyraz] = useState('');
+        const [typHladania, setTypHladania] = useState('Nazov');
+        const [products, setProducts] = useState<Product[]>([]);
+        const [vybranyProdukt, setVybranyProdukt] = useState<Product | null>(null);
 
-    const zmenTypHladania = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setTypHladania(event.target.value);
-    };
-
-    const zmenVybranyProdukt = (product: Product) => {
-        setVybranyProdukt(product);
-        console.log(product);
-    };
-
-    const nastavMaximalku = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const quantity = parseInt(formData.get("quantity") as string, 10);
-        try {
-            await axios.patch(
-                `https://localhost:7145/api/Product/MAX/${vybranyProdukt?.id}`,
-                quantity,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                }
-            );
-
-            console.log("Response:", quantity);
-        } catch (error) {
-            console.error("Error posting data:", error);
-        }
-        setVybranyProdukt(null);
-    };
-
-    const nastavOptiku = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const quantity = parseInt(formData.get("quantity") as string, 10);
-        try {
-            await axios.patch(
-                `https://localhost:7145/api/Product/OPT/${vybranyProdukt?.id}`,
-                quantity,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                }
-            );
-
-            console.log("Response:", quantity);
-        } catch (error) {
-            console.error("Error posting data:", error);
-        }
-        setVybranyProdukt(null);
-    };
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(`https://localhost:7145/api/Product/Search`, {
-                    params: {
-                        searchType: typHladania,
-                        searchTerm: hladanyVyraz
-                    }
-                });
-                const data = response.data;
-                setProducts(data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
+        const zmenHladanyVyraz = (event: React.ChangeEvent<HTMLInputElement>) => {
+            setHladanyVyraz(event.target.value);
         };
 
-        if (hladanyVyraz) {
-            fetchData();
-        }
-    }, [hladanyVyraz, typHladania]);
+        const zmenTypHladania = (event: React.ChangeEvent<HTMLSelectElement>) => {
+            setTypHladania(event.target.value);
+        };
 
-    return (
-        <div className={styles.container}>
-            <h1 className={styles.nazov}>Optika a Maximalka</h1>
-            <input
-                className={styles.input}
-                type="text"
-                value={hladanyVyraz}
-                onChange={zmenHladanyVyraz}
-                placeholder={typHladania === "Nazov" ? "Hladaj pod\u013Ea n\u00E1zvu" : "h\u013Eadaj pod\u013Ea EAN k\u00F3du"}
-            />
-            <select value={typHladania} onChange={zmenTypHladania} className={styles.selectField}>
-                <option value="Nazov">Nazov</option>
-                <option value="EanKod">EanKod</option>
-            </select>
-            {vybranyProdukt ? (
-                <>
-                    <div>{vybranyProdukt.nazov}</div>
-                    <form className={styles.form} onSubmit={nastavOptiku}>
+        const zmenVybranyProdukt = (product: Product) => {
+            setVybranyProdukt(product);
+            console.log(product);
+        };
 
-                        <p>Optika: {vybranyProdukt.minZasoba}</p>
-                        <p className={styles.zasobaInput}>Nastavit Optiku :&nbsp; <input type="number" name="quantity" min="1" max="1000" /> </p>
+        const nastavMaximalku = async (event: React.FormEvent<HTMLFormElement>) => {
+            event.preventDefault();
+            const formData = new FormData(event.currentTarget);
+            const quantity = parseInt(formData.get("quantity") as string, 10);
+            try {
+                await axios.patch(
+                    `${API_BASE_URL}/MAX/${vybranyProdukt?.id}`,
+                    quantity,
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    }
+                );
 
-                        <button className={styles.button}>Potvrdit</button>
-                    </form>
-                    <form className={styles.form} onSubmit={nastavMaximalku}>
+                console.log("Response:", quantity);
+            } catch (error) {
+                console.error("Error posting data:", error);
+            }
+            setVybranyProdukt(null);
+        };
 
-                        <p>Maximalka: {vybranyProdukt.maxZasoba}</p>
-                        <p className={styles.zasobaInput}>Nastavit Maximalku :&nbsp; <input type="number" name="quantity" min="1" max="1000" /> </p>
+        const nastavOptiku = async (event: React.FormEvent<HTMLFormElement>) => {
+            event.preventDefault();
+            const formData = new FormData(event.currentTarget);
+            const quantity = parseInt(formData.get("quantity") as string, 10);
+            try {
+                await axios.patch(
+                    `${API_BASE_URL}/OPT/${vybranyProdukt?.id}`,
+                    quantity,
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    }
+                );
 
-                        <button className={styles.button}>Potvrdit</button>
-                    </form>
-                </>
-            ) : (
-                <div className={styles.productsWrapper}>
-                    {products.map(product => (
-                        <div className={styles.zoznam} key={product.id} onClick={() => zmenVybranyProdukt(product)}>
-                            <div className={styles.produkt}>Nazov: {product.nazov}</div>
-                            <div className={styles.produkt}>EAN: {product.eanKod}</div>
-                            <div className={styles.produkt}>Zasoba: {product.zasoba} ks</div>
-                            <div className={styles.produkt}>Optika: {product.minZasoba} ks</div>
-                            <div className={styles.produkt}>Cena: {product.cena} eur</div>
-                        </div>
-                    ))}
-                </div>
-            )}
+                console.log("Response:", quantity);
+            } catch (error) {
+                console.error("Error posting data:", error);
+            }
+            setVybranyProdukt(null);
+        };
 
-        </div>
-    );
-}
+        useEffect(() => {
+            const fetchData = async () => {
+                try {
+                    const response = await axios.get(`${API_BASE_URL}/Search`, {
+                        params: {
+                            searchType: typHladania,
+                            searchTerm: hladanyVyraz
+                        }
+                    });
+                    const data = response.data;
+                    setProducts(data);
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                }
+            };
 
-export default MAXOPT;
+            if (hladanyVyraz) {
+                fetchData();
+            }
+        }, [hladanyVyraz, typHladania]);
+
+        return (
+            <div className={styles.container}>
+                <h1 className={styles.nazov}>Optika a Maximalka</h1>
+                <input
+                    className={styles.input}
+                    type="text"
+                    value={hladanyVyraz}
+                    onChange={zmenHladanyVyraz}
+                    placeholder={typHladania === "Nazov" ? "Hladaj pod\u013Ea n\u00E1zvu" : "h\u013Eadaj pod\u013Ea EAN k\u00F3du"}
+                />
+                <select value={typHladania} onChange={zmenTypHladania} className={styles.selectField}>
+                    <option value="Nazov">Nazov</option>
+                    <option value="EanKod">EanKod</option>
+                </select>
+                {vybranyProdukt ? (
+                    <>
+                        <div>{vybranyProdukt.nazov}</div>
+                        <form className={styles.form} onSubmit={nastavOptiku}>
+
+                            <p>Optika: {vybranyProdukt.minZasoba}</p>
+                            <p className={styles.zasobaInput}>Nastavit Optiku :&nbsp; <input type="number" name="quantity" min="1" max="1000" /> </p>
+
+                            <button className={styles.button}>Potvrdit</button>
+                        </form>
+                        <form className={styles.form} onSubmit={nastavMaximalku}>
+
+                            <p>Maximalka: {vybranyProdukt.maxZasoba}</p>
+                            <p className={styles.zasobaInput}>Nastavit Maximalku :&nbsp; <input type="number" name="quantity" min="1" max="1000" /> </p>
+
+                            <button className={styles.button}>Potvrdit</button>
+                        </form>
+                    </>
+                ) : (
+                    <div className={styles.productsWrapper}>
+                        {products.map(product => (
+                            <div className={styles.zoznam} key={product.id} onClick={() => zmenVybranyProdukt(product)}>
+                                <div className={styles.produkt}>Nazov: {product.nazov}</div>
+                                <div className={styles.produkt}>EAN: {product.eanKod}</div>
+                                <div className={styles.produkt}>Zasoba: {product.zasoba} ks</div>
+                                <div className={styles.produkt}>Optika: {product.minZasoba} ks</div>
+                                <div className={styles.produkt}>Cena: {product.cena} eur</div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+
+            </div>
+        );
+    }
+
+    export default MAXOPT;
