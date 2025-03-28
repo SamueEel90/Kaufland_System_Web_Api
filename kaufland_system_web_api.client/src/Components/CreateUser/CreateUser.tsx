@@ -34,7 +34,7 @@ function CreateUser() {
         console.log("User data sent to API:", userData);
 
         try {
-            const response = await axios.post('https://localhost:7016/api/User/CreateUser', userData, {
+            const response = await axios.post('https://localhost:7145/api/User/CreateUser', userData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

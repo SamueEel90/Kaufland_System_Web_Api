@@ -41,7 +41,7 @@ function MAXOPT() {
         const quantity = parseInt(formData.get("quantity") as string, 10);
         try {
             await axios.patch(
-                `https://localhost:7016/api/Product/MAX/${vybranyProdukt?.id}`,
+                `https://localhost:7145/api/Product/MAX/${vybranyProdukt?.id}`,
                 quantity,
                 {
                     headers: {
@@ -63,7 +63,7 @@ function MAXOPT() {
         const quantity = parseInt(formData.get("quantity") as string, 10);
         try {
             await axios.patch(
-                `https://localhost:7016/api/Product/OPT/${vybranyProdukt?.id}`,
+                `https://localhost:7145/api/Product/OPT/${vybranyProdukt?.id}`,
                 quantity,
                 {
                     headers: {
@@ -82,7 +82,7 @@ function MAXOPT() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`https://localhost:7016/api/Product/Search`, {
+                const response = await axios.get(`https://localhost:7145/api/Product/Search`, {
                     params: {
                         searchType: typHladania,
                         searchTerm: hladanyVyraz

@@ -1,0 +1,64 @@
+﻿﻿.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    margin-bottom: 15px;
+    transition: transform 0.2s ease-in-out;
+}
+
+    .card:hover {
+        transform: scale(1.02);
+    }
+
+.productName {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.productInfo {
+    font-size: 14px;
+    color: #555;
+    margin: 5px 0;
+}
+
+    .productInfo span {
+        font-weight: bold;
+        color: #222;
+    }
+
+.orderAmount {
+    font-size: 16px;
+    font-weight: bold;
+    color: #007bff;
+    margin: 10px 0;
+}
+
+.removeButton {
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+}
+
+    .removeButton:hover {
+        background: #cc0000;
+    }

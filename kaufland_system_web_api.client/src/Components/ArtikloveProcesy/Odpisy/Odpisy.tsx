@@ -58,7 +58,7 @@ function Odpisy() {
             console.error('Invalid product or value');
         } else {
             try {
-                await axios.patch(`https://localhost:7016/api/Product/Odpisy/${vybranyProdukt?.id}`,
+                await axios.patch(`https://localhost:7145/api/Product/Odpisy/${vybranyProdukt?.id}`,
                     mnozstvo,
                     {
                         headers: {
@@ -76,7 +76,7 @@ function Odpisy() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`https://localhost:7016/api/Product/Search`, {
+                const response = await axios.get(`https://localhost:7145/api/Product/Search`, {
                     params: {
                         searchType: typHladania,
                         searchTerm: hladanyVyraz
