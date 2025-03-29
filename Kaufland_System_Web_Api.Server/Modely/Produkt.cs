@@ -12,7 +12,8 @@
         public string Vyrobca { get; set; } = string.Empty;
         public int PocetPredanych { get; set; }
         public int MinZasoba { get; set; }
-
         public int MaxZasoba { get; set; }
+
+        public DateTime DatumSpotreby { get; set; } = DateTime.Now;
     }
 }
