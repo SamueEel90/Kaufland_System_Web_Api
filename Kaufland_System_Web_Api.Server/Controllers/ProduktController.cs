@@ -101,4 +101,11 @@ public class ProductController : ControllerBase
         var lowStockProducts = await _produktService.GetLowStockProducts(category);
         return Ok(lowStockProducts);
     }
+    [HttpGet("NulovaZasoba")]
+    public async Task<ActionResult<IEnumerable<Produkt>>> GetZeroStockProducts()
+    {
+        var zeroStockProducts = await _produktService.GetZeroStockProducts();
+        return Ok(zeroStockProducts);
+    }
+
 }

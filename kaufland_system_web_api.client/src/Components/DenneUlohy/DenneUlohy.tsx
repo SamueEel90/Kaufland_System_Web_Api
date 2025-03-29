@@ -1,6 +1,6 @@
 ﻿import React from 'react';
 import axios from 'axios';
-
+import { useEffect } from 'react';
 const API_URL = 'https://localhost:7145/api/Product';
 
 
@@ -16,13 +16,13 @@ const DenneUlohy: React.FC = () => {
         }
     }
 
-
+    useEffect(() => { fetchData() }, []);
 
     return (
         <>
             <h1>DenneUlohy</h1>
 
-            <p>Artikle s nulovou zasobou: </p>
+            <p>Artikle s nulovou zasobou: { } </p>
 
             <p>Artikle s minusovou zasobou: </p>
 

@@ -31,5 +31,11 @@ namespace Kaufland_Software.Server.Services
                 .Where(p => p.Zasoba < p.MinZasoba && p.DruhListovania == "Stály" && p.Kategoria == category)
                 .ToListAsync();
         }
+        public async Task<List<Produkt>> GetZeroStockProducts()
+        {
+            return await _context.Produkty
+                .Where(p => p.Zasoba == 0)
+                .ToListAsync();
+        }
     }
 }
