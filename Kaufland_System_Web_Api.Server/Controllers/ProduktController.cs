@@ -107,5 +107,10 @@ public class ProductController : ControllerBase
         var zeroStockProducts = await _produktService.GetZeroStockProducts();
         return Ok(zeroStockProducts);
     }
-
+    [HttpGet("MinusovaZasoba")]
+    public async Task<ActionResult<IEnumerable<Produkt>>> GetNegativeStockProducts()
+    {
+        var negativeStockProducts = await _produktService.GetNegativeStockProducts();
+        return Ok(negativeStockProducts);
+    }
 }

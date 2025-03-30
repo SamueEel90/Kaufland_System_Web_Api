@@ -37,5 +37,12 @@ namespace Kaufland_Software.Server.Services
                 .Where(p => p.Zasoba == 0)
                 .ToListAsync();
         }
+        public async Task<List<Produkt>> GetNegativeStockProducts()
+        {
+            return await _context.Produkty
+                .Where(p => p.Zasoba < 0)
+                .ToListAsync();
+
+        }
     }
 }
