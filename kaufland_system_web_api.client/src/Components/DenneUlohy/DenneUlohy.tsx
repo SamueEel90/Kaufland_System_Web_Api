@@ -61,7 +61,7 @@ const DenneUlohy: React.FC = () => {
 
             <div className={styles.productsWrapper}>
                 <div className={styles.zoznam}>
-                    <h2>Artikle s nulovou zásobou</h2>
+                    <h2>Artikle s nulovou zásobou {nulovaZasoba.length}</h2>
                     {nulovaZasoba.map((item) => (
                         <button
                             className={styles.zoznam}
@@ -75,12 +75,13 @@ const DenneUlohy: React.FC = () => {
                 </div>
 
                 <div className={styles.zoznam}>
-                    <h2>Artikle s minusovou zásobou</h2>
+                    <h2>Artikle s minusovou zásobou {minusovaZasoba.length}</h2>
                     {minusovaZasoba.map((item) => (
                         <button
                             className={styles.zoznam}
                             key={item.id}
                             onMouseOver={() => setVybranyProduktKontext(item)}
+                            onClick={presmerovanieNaKorekciu}
                         >
                             {item.nazov}
                         </button>
@@ -88,8 +89,15 @@ const DenneUlohy: React.FC = () => {
                 </div>
             </div>
 
+            <div className={styles.asContainer}>
+            <h2>AS Proces</h2>
+
+            </div> 
+                
+
+
             <div className={styles.form}>
-                <p className={styles.produkt}>AS proces</p>
+                
                 <p className={styles.produkt}>Dátumy spotreby</p>
                 <p className={styles.produkt}>Zľavy z centrálnej</p>
             </div>
