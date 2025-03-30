@@ -17,7 +17,7 @@ interface Product {
 const API_BASE_URL = 'https://localhost:7145/api/Product';
 function KorekciaZasob() {
     const location = useLocation();
-    const { vybranyProduktKontext } = location.state || {};  
+    const { vybranyProduktKontext } = location.state || {};
     const [hladanyVyraz, setHladanyVyraz] = useState('');
     const [typHladania, setTypHladania] = useState('Nazov');
     const [products, setProducts] = useState<Product[]>([]);
@@ -70,7 +70,7 @@ function KorekciaZasob() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`${API_BASE_URL }/Search`, {
+                const response = await axios.get(`${API_BASE_URL}/Search`, {
                     params: {
                         searchType: typHladania,
                         searchTerm: hladanyVyraz
@@ -90,20 +90,22 @@ function KorekciaZasob() {
 
     return (
 
-        vybranyProduktKontext ? (
-            <>
-                <div>{vybranyProduktKontext.nazov}</div>
-                <form className={styles.form} onSubmit={korekcia}>
-                    <p>Aktualna Zasoba: {vybranyProduktKontext.zasoba} id: {vybranyProduktKontext.id }</p>
-                    <p className={styles.zasobaInput}>
-                        Nova Zasoba: <input type="number" name="quantity" min="0" max="1000" />
-                    </p>
-                    <button className={styles.button}>Potvrdit</button>
-                </form>
-            </>
-        ) : (
-      
         <div className={styles.container}>
+            {vybranyProduktKontext ? (
+
+                <>
+                    <div>{vybranyProduktKontext.nazov}</div>
+                    <form className={styles.form} onSubmit={korekcia}>
+                        <p>Aktualna Zasoba: {vybranyProduktKontext.zasoba}</p>
+                        <p className={styles.zasobaInput}>
+                            Nova Zasoba: <input type="number" name="quantity" min="0" max="1000" />
+                        </p>
+                        <button className={styles.button}>Potvrdit</button>
+                    </form>
+                </>
+            ) : (
+                <>
+        
             <h1 className={styles.nazov}>Korekcia Zasob</h1>
             <input
                 className={styles.input}
@@ -140,9 +142,11 @@ function KorekciaZasob() {
                     ))}
                 </div>
             )}
-
+        </>
+    )
+}
         </div>
-        )
+    
     );
 }
 

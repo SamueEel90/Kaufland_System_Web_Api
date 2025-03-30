@@ -1,8 +1,7 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useEffect } from 'react';
 import styles from './DenneUlohy.module.css';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 
 interface Product {
     id: number;
@@ -16,78 +15,86 @@ interface Product {
     pocetPredanych: number;
     druhListovania: string;
 }
+
 const API_URL = 'https://localhost:7145/api/Product';
+
 const DenneUlohy: React.FC = () => {
     const navigate = useNavigate();
-    const [nulovaZasoba, SetNulovaZasoba] = useState<Product[]>([]);
+    const [nulovaZasoba, setNulovaZasoba] = useState<Product[]>([]);
     const [minusovaZasoba, setMinusovaZasoba] = useState<Product[]>([]);
     const [vybranyProduktKontext, setVybranyProduktKontext] = useState<Product | null>(null);
 
     useEffect(() => {
-        const NulovaZasoba = async () => {
+        const fetchNulovaZasoba = async () => {
             try {
                 const response = await axios.get(`${API_URL}/NulovaZasoba`);
                 const data = response.data;
-                SetNulovaZasoba(data);
+                setNulovaZasoba(data);
             } catch (error) {
-                console.error('Error fetching data:', error);
+                console.error('Error fetching NulovaZasoba:', error);
             }
-        }
-        NulovaZasoba();
-        const MinusovaZasoba = async () => {
+        };
+
+        const fetchMinusovaZasoba = async () => {
             try {
                 const response = await axios.get(`${API_URL}/MinusovaZasoba`);
                 const data = response.data;
                 setMinusovaZasoba(data);
             } catch (error) {
-                console.error('Error fetching data:', error);
+                console.error('Error fetching MinusovaZasoba:', error);
             }
-        }
-        MinusovaZasoba();
-        console.log(vybranyProduktKontext);
-    }, [setVybranyProduktKontext, vybranyProduktKontext]);
+        };
 
-    const PresmerovanieNaKorekciu = () => {
+        fetchNulovaZasoba();
+        fetchMinusovaZasoba();
+    }, []);
+
+    const presmerovanieNaKorekciu = () => {
         navigate('/artikloveProcesy/KorekciaZasob', {
             state: { vybranyProduktKontext }
         });
-    }
+    };
 
     return (
-        <>
-            <h1>DenneUlohy</h1>
+        <div className={styles.container}>
+            <h1 className={styles.nazov}>Denné Úlohy</h1>
 
-            <div>Artikle s nulovou zasobou: {nulovaZasoba.map((item) => {
-                return (
-                    <button
-                        className={styles.itemButton}
-                        key={item.id}
-                        onMouseOver={() => setVybranyProduktKontext(item)}
-                        onClick={PresmerovanieNaKorekciu}
-                    >
-                        {item.nazov}
-                    </button>
-                )
-            })} </div>
+            <div className={styles.productsWrapper}>
+                <div className={styles.zoznam}>
+                    <h2>Artikle s nulovou zásobou</h2>
+                    {nulovaZasoba.map((item) => (
+                        <button
+                            className={styles.zoznam}
+                            key={item.id}
+                            onMouseOver={() => setVybranyProduktKontext(item)}
+                            onClick={presmerovanieNaKorekciu}
+                        >
+                            {item.nazov}
+                        </button>
+                    ))}
+                </div>
 
-            <div>Artikle s minusovou zasobou:{minusovaZasoba.map((item) => {
-              return  (
-                    <button
-                        className={styles.itemButton}
-                        key={item.id}
-                        onMouseOver={() => setVybranyProduktKontext(item)}
-                    >
-                        {item.nazov}
-                    </button>
-                )
-            })} </div>
+                <div className={styles.zoznam}>
+                    <h2>Artikle s minusovou zásobou</h2>
+                    {minusovaZasoba.map((item) => (
+                        <button
+                            className={styles.zoznam}
+                            key={item.id}
+                            onMouseOver={() => setVybranyProduktKontext(item)}
+                        >
+                            {item.nazov}
+                        </button>
+                    ))}
+                </div>
+            </div>
 
-            <p>AS proces </p>
+            <div className={styles.form}>
+                <p className={styles.produkt}>AS proces</p>
+                <p className={styles.produkt}>Dátumy spotreby</p>
+                <p className={styles.produkt}>Zľavy z centrálnej</p>
+            </div>
+        </div>
+    );
+};
 
-            <p>Datumy Spotreby:</p>
-
-            <p>Zlavy s centraly</p>
-        </>
-    )
-}
 export default DenneUlohy;
