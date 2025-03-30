@@ -1,7 +1,8 @@
 ﻿import React, { useState } from 'react';
 import axios from 'axios';
 import { useEffect } from 'react';
-const API_URL = 'https://localhost:7145/api/Product';
+import styles from './DenneUlohy.module.css';
+import { useNavigate } from 'react-router-dom'; 
 
 interface Product {
     id: number;
@@ -15,14 +16,14 @@ interface Product {
     pocetPredanych: number;
     druhListovania: string;
 }
-
+const API_URL = 'https://localhost:7145/api/Product';
 const DenneUlohy: React.FC = () => {
+    const navigate = useNavigate();
+    const [nulovaZasoba, SetNulovaZasoba] = useState<Product[]>([]);
+    const [minusovaZasoba, setMinusovaZasoba] = useState<Product[]>([]);
+    const [vybranyProduktKontext, setVybranyProduktKontext] = useState<Product | null>(null);
 
-const [nulovaZasoba, SetNulovaZasoba] = useState<Product[]>([]);   
-    const [minusovaZasoba, setMinusovaZasoba] = useState<Product[]>([]);  
-   
     useEffect(() => {
-
         const NulovaZasoba = async () => {
             try {
                 const response = await axios.get(`${API_URL}/NulovaZasoba`);
@@ -43,19 +44,43 @@ const [nulovaZasoba, SetNulovaZasoba] = useState<Product[]>([]);
             }
         }
         MinusovaZasoba();
- }, []);
+        console.log(vybranyProduktKontext);
+    }, [setVybranyProduktKontext, vybranyProduktKontext]);
+
+    const PresmerovanieNaKorekciu = () => {
+        navigate('/artikloveProcesy/KorekciaZasob', {
+            state: { vybranyProduktKontext }
+        });
+    }
 
     return (
         <>
             <h1>DenneUlohy</h1>
 
             <div>Artikle s nulovou zasobou: {nulovaZasoba.map((item) => {
-                return <p key={item.id }>{item.nazov}</p>
+                return (
+                    <button
+                        className={styles.itemButton}
+                        key={item.id}
+                        onMouseOver={() => setVybranyProduktKontext(item)}
+                        onClick={PresmerovanieNaKorekciu}
+                    >
+                        {item.nazov}
+                    </button>
+                )
             })} </div>
 
             <div>Artikle s minusovou zasobou:{minusovaZasoba.map((item) => {
-                return <p key={item.id}>{item.nazov}</p>
-            })} </div> 
+              return  (
+                    <button
+                        className={styles.itemButton}
+                        key={item.id}
+                        onMouseOver={() => setVybranyProduktKontext(item)}
+                    >
+                        {item.nazov}
+                    </button>
+                )
+            })} </div>
 
             <p>AS proces </p>
 

@@ -1,7 +1,7 @@
 ﻿import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './KorekciaZasob.module.css';
-
+import { useLocation } from 'react-router-dom'; 
 interface Product {
     id: number;
     nazov: string;
@@ -16,11 +16,20 @@ interface Product {
 }
 const API_BASE_URL = 'https://localhost:7145/api/Product';
 function KorekciaZasob() {
-
+    const location = useLocation();
+    const { vybranyProduktKontext } = location.state || {};  
     const [hladanyVyraz, setHladanyVyraz] = useState('');
     const [typHladania, setTypHladania] = useState('Nazov');
     const [products, setProducts] = useState<Product[]>([]);
     const [vybranyProdukt, setVybranyProdukt] = useState<Product | null>(null);
+
+
+    useEffect(() => {
+        if (vybranyProduktKontext) {
+            setVybranyProdukt(vybranyProduktKontext);
+        }
+    }, [vybranyProduktKontext]);
+
 
     const zmenHladanyVyraz = (event: React.ChangeEvent<HTMLInputElement>) => {
         setHladanyVyraz(event.target.value);
@@ -39,6 +48,7 @@ function KorekciaZasob() {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const quantity = parseInt(formData.get("quantity") as string, 10);
+
         try {
             await axios.patch(
                 `${API_BASE_URL}/KorekciaZasob/${vybranyProdukt?.id}`,
@@ -79,6 +89,20 @@ function KorekciaZasob() {
     }, [hladanyVyraz, typHladania]);
 
     return (
+
+        vybranyProduktKontext ? (
+            <>
+                <div>{vybranyProduktKontext.nazov}</div>
+                <form className={styles.form} onSubmit={korekcia}>
+                    <p>Aktualna Zasoba: {vybranyProduktKontext.zasoba} id: {vybranyProduktKontext.id }</p>
+                    <p className={styles.zasobaInput}>
+                        Nova Zasoba: <input type="number" name="quantity" min="0" max="1000" />
+                    </p>
+                    <button className={styles.button}>Potvrdit</button>
+                </form>
+            </>
+        ) : (
+      
         <div className={styles.container}>
             <h1 className={styles.nazov}>Korekcia Zasob</h1>
             <input
@@ -118,6 +142,7 @@ function KorekciaZasob() {
             )}
 
         </div>
+        )
     );
 }
 
