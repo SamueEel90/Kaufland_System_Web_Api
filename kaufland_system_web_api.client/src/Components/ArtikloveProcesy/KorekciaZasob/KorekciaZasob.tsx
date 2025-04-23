@@ -1,7 +1,7 @@
 ﻿import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './KorekciaZasob.module.css';
-import { useLocation } from 'react-router-dom'; 
+
 interface Product {
     id: number;
     nazov: string;
@@ -16,20 +16,11 @@ interface Product {
 }
 const API_BASE_URL = 'https://localhost:7145/api/Product';
 function KorekciaZasob() {
-    const location = useLocation();
-    const { vybranyProduktKontext } = location.state || {};
+
     const [hladanyVyraz, setHladanyVyraz] = useState('');
     const [typHladania, setTypHladania] = useState('Nazov');
     const [products, setProducts] = useState<Product[]>([]);
     const [vybranyProdukt, setVybranyProdukt] = useState<Product | null>(null);
-
-
-    useEffect(() => {
-        if (vybranyProduktKontext) {
-            setVybranyProdukt(vybranyProduktKontext);
-        }
-    }, [vybranyProduktKontext]);
-
 
     const zmenHladanyVyraz = (event: React.ChangeEvent<HTMLInputElement>) => {
         setHladanyVyraz(event.target.value);
@@ -48,7 +39,6 @@ function KorekciaZasob() {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const quantity = parseInt(formData.get("quantity") as string, 10);
-
         try {
             await axios.patch(
                 `${API_BASE_URL}/KorekciaZasob/${vybranyProdukt?.id}`,
@@ -70,7 +60,7 @@ function KorekciaZasob() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`${API_BASE_URL}/Search`, {
+                const response = await axios.get(`${API_BASE_URL }/Search`, {
                     params: {
                         searchType: typHladania,
                         searchTerm: hladanyVyraz
@@ -89,23 +79,7 @@ function KorekciaZasob() {
     }, [hladanyVyraz, typHladania]);
 
     return (
-
         <div className={styles.container}>
-            {vybranyProduktKontext ? (
-
-                <>
-                    <div>{vybranyProduktKontext.nazov}</div>
-                    <form className={styles.form} onSubmit={korekcia}>
-                        <p>Aktualna Zasoba: {vybranyProduktKontext.zasoba}</p>
-                        <p className={styles.zasobaInput}>
-                            Nova Zasoba: <input type="number" name="quantity" min="0" max="1000" />
-                        </p>
-                        <button className={styles.button}>Potvrdit</button>
-                    </form>
-                </>
-            ) : (
-                <>
-        
             <h1 className={styles.nazov}>Korekcia Zasob</h1>
             <input
                 className={styles.input}
@@ -142,11 +116,8 @@ function KorekciaZasob() {
                     ))}
                 </div>
             )}
-        </>
-    )
-}
+
         </div>
-    
     );
 }
 
