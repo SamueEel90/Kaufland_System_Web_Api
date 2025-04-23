@@ -25,5 +25,7 @@
         public FazyProcesu ASproces { get; set; } = FazyProcesu.None;
         
         public DateTime DatumSpotreby { get; set; } = DateTime.Now;
+
+        public DateTime? DatumZmenyASFazy { get; set; } = null;
     }
 }

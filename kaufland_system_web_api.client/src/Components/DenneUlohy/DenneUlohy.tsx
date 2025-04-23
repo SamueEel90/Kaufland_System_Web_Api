@@ -2,6 +2,7 @@
 import axios from 'axios';
 import styles from './DenneUlohy.module.css';
 import { useNavigate } from 'react-router-dom';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 interface Product {
     id: number;
@@ -14,6 +15,7 @@ interface Product {
     minZasoba: number;
     pocetPredanych: number;
     druhListovania: string;
+    aSproces: number;
 }
 
 const API_URL = 'https://localhost:7145/api/Product';
@@ -22,6 +24,7 @@ const DenneUlohy: React.FC = () => {
     const navigate = useNavigate();
     const [nulovaZasoba, setNulovaZasoba] = useState<Product[]>([]);
     const [minusovaZasoba, setMinusovaZasoba] = useState<Product[]>([]);
+    const [asProces, setasProces] = useState<Product[]>([]);
     const [vybranyProduktKontext, setVybranyProduktKontext] = useState<Product | null>(null);
 
     useEffect(() => {
@@ -45,8 +48,21 @@ const DenneUlohy: React.FC = () => {
             }
         };
 
+        const fetchAsProces = async () => {
+            try {
+                const response = await axios.get(`${API_URL}/AsProcess`);
+                console.log("AS Process Response:", response.data);
+                const data = response.data
+                setasProces(data)
+            } catch (error) {
+                console.error('Error fetching ASPROCESS:', error);
+            }
+        }
+
         fetchNulovaZasoba();
         fetchMinusovaZasoba();
+        fetchAsProces()
+        
     }, []);
 
     const presmerovanieNaKorekciu = () => {
@@ -54,6 +70,8 @@ const DenneUlohy: React.FC = () => {
             state: { vybranyProduktKontext }
         });
     };
+
+ 
 
     return (
         <div className={styles.container}>
@@ -87,17 +105,23 @@ const DenneUlohy: React.FC = () => {
                         </button>
                     ))}
                 </div>
+                <div className={styles.zoznam}>
+                    <h2>Artikle na spracovanie AS procesom  {asProces.length}</h2>
+                    {asProces.map((item) => (
+                        <button
+                            className={styles.zoznam}
+                            key={item.id}
+                            
+                        >
+                            {item.nazov}
+                        </button>
+                    ))}
+                </div>
             </div>
 
-            <div className={styles.asContainer}>
-            <h2>AS Proces</h2>
-
-            </div> 
-                
-
+           
 
             <div className={styles.form}>
-                
                 <p className={styles.produkt}>Dátumy spotreby</p>
                 <p className={styles.produkt}>Zľavy z centrálnej</p>
             </div>
