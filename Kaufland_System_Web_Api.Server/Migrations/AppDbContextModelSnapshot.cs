@@ -30,16 +30,10 @@ namespace Kaufland_System_Web_Api.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ASproces")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Cena")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("DatumSpotreby")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DatumZmenyASFazy")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DruhListovania")

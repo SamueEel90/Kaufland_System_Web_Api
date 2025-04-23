@@ -1,8 +1,7 @@
-﻿import React, { useState, useEffect } from 'react';
+﻿import React, { useState } from 'react';
 import axios from 'axios';
-import styles from './DenneUlohy.module.css';
-import { useNavigate } from 'react-router-dom';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { useEffect } from 'react';
+const API_URL = 'https://localhost:7145/api/Product';
 
 interface Product {
     id: number;
@@ -15,118 +14,55 @@ interface Product {
     minZasoba: number;
     pocetPredanych: number;
     druhListovania: string;
-    aSproces: number;
 }
 
-const API_URL = 'https://localhost:7145/api/Product';
-
 const DenneUlohy: React.FC = () => {
-    const navigate = useNavigate();
-    const [nulovaZasoba, setNulovaZasoba] = useState<Product[]>([]);
-    const [minusovaZasoba, setMinusovaZasoba] = useState<Product[]>([]);
-    const [asProces, setasProces] = useState<Product[]>([]);
-    const [vybranyProduktKontext, setVybranyProduktKontext] = useState<Product | null>(null);
 
+const [nulovaZasoba, SetNulovaZasoba] = useState<Product[]>([]);   
+    const [minusovaZasoba, setMinusovaZasoba] = useState<Product[]>([]);  
+   
     useEffect(() => {
-        const fetchNulovaZasoba = async () => {
+
+        const NulovaZasoba = async () => {
             try {
                 const response = await axios.get(`${API_URL}/NulovaZasoba`);
                 const data = response.data;
-                setNulovaZasoba(data);
+                SetNulovaZasoba(data);
             } catch (error) {
-                console.error('Error fetching NulovaZasoba:', error);
+                console.error('Error fetching data:', error);
             }
-        };
-
-        const fetchMinusovaZasoba = async () => {
+        }
+        NulovaZasoba();
+        const MinusovaZasoba = async () => {
             try {
                 const response = await axios.get(`${API_URL}/MinusovaZasoba`);
                 const data = response.data;
                 setMinusovaZasoba(data);
             } catch (error) {
-                console.error('Error fetching MinusovaZasoba:', error);
-            }
-        };
-
-        const fetchAsProces = async () => {
-            try {
-                const response = await axios.get(`${API_URL}/AsProcess`);
-                console.log("AS Process Response:", response.data);
-                const data = response.data
-                setasProces(data)
-            } catch (error) {
-                console.error('Error fetching ASPROCESS:', error);
+                console.error('Error fetching data:', error);
             }
         }
-
-        fetchNulovaZasoba();
-        fetchMinusovaZasoba();
-        fetchAsProces()
-        
-    }, []);
-
-    const presmerovanieNaKorekciu = () => {
-        navigate('/artikloveProcesy/KorekciaZasob', {
-            state: { vybranyProduktKontext }
-        });
-    };
-
- 
+        MinusovaZasoba();
+ }, []);
 
     return (
-        <div className={styles.container}>
-            <h1 className={styles.nazov}>Denné Úlohy</h1>
+        <>
+            <h1>DenneUlohy</h1>
 
-            <div className={styles.productsWrapper}>
-                <div className={styles.zoznam}>
-                    <h2>Artikle s nulovou zásobou {nulovaZasoba.length}</h2>
-                    {nulovaZasoba.map((item) => (
-                        <button
-                            className={styles.zoznam}
-                            key={item.id}
-                            onMouseOver={() => setVybranyProduktKontext(item)}
-                            onClick={presmerovanieNaKorekciu}
-                        >
-                            {item.nazov}
-                        </button>
-                    ))}
-                </div>
+            <div>Artikle s nulovou zasobou: {nulovaZasoba.map((item) => {
+                return <p key={item.id }>{item.nazov}</p>
+            })} </div>
 
-                <div className={styles.zoznam}>
-                    <h2>Artikle s minusovou zásobou {minusovaZasoba.length}</h2>
-                    {minusovaZasoba.map((item) => (
-                        <button
-                            className={styles.zoznam}
-                            key={item.id}
-                            onMouseOver={() => setVybranyProduktKontext(item)}
-                            onClick={presmerovanieNaKorekciu}
-                        >
-                            {item.nazov}
-                        </button>
-                    ))}
-                </div>
-                <div className={styles.zoznam}>
-                    <h2>Artikle na spracovanie AS procesom  {asProces.length}</h2>
-                    {asProces.map((item) => (
-                        <button
-                            className={styles.zoznam}
-                            key={item.id}
-                            
-                        >
-                            {item.nazov}
-                        </button>
-                    ))}
-                </div>
-            </div>
+            <div>Artikle s minusovou zasobou:{minusovaZasoba.map((item) => {
+                return <p key={item.id}>{item.nazov}</p>
+            })} </div> 
 
-           
+            <p>AS proces </p>
 
-            <div className={styles.form}>
-                <p className={styles.produkt}>Dátumy spotreby</p>
-                <p className={styles.produkt}>Zľavy z centrálnej</p>
-            </div>
-        </div>
-    );
-};
+            <p>Datumy Spotreby:</p>
 
+            <p>Zlavy s centraly</p>
+        </>
+    )
+}
 export default DenneUlohy;
