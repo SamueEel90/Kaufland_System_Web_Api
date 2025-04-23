@@ -113,4 +113,16 @@ public class ProductController : ControllerBase
         var negativeStockProducts = await _produktService.GetNegativeStockProducts();
         return Ok(negativeStockProducts);
     }
+    [HttpGet("AsProcess")]
+    public async Task<ActionResult<IEnumerable<Produkt>>> GetAsProcess()
+    {
+    var asProcesItems = await _produktService.GetAsProcess();
+    return Ok(asProcesItems);
+    }
+    [HttpPatch("ZmenaFazyAs/{id}")]
+    public async Task<ActionResult> ZmenaFazyAs(int id, int day, int month, int year)
+    {
+    await _produktService.SetNewAsPeriod(id, day, month, year);
+    return NoContent();
+    }
 }

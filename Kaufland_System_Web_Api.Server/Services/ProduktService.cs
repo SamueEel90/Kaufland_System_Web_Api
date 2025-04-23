@@ -44,5 +44,22 @@ namespace Kaufland_Software.Server.Services
                 .ToListAsync();
 
         }
+        public async Task<List<Produkt>> GetAsProcess()
+        {
+            return await _context.Produkty
+                .Where(p =>p.ASproces != 0) 
+                .ToListAsync();
+        }
+        public async Task SetNewAsPeriod(int id, int day, int month, int year)
+        {
+            var produkt = await _context.Produkty.FirstOrDefaultAsync(p => p.Id == id);
+            if (produkt != null)
+            {
+                var newDate = new DateTime(year, month, day).AddDays(14);
+                produkt.DatumZmenyASFazy = newDate;
+                _context.Produkty.Update(produkt);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

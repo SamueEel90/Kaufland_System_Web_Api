@@ -4,6 +4,7 @@ using Kaufland_Software.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kaufland_System_Web_Api.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250330121316_UpdateMode")]
+    partial class UpdateMode
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,9 +40,6 @@ namespace Kaufland_System_Web_Api.Server.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("DatumSpotreby")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DatumZmenyASFazy")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DruhListovania")
